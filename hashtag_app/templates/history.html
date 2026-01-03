@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Історія{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <h1>Історія генерацій</h1>
+    <p class="muted">Останні 50 запитів, збережених у віддаленій БД.</p>
+
+    {% if not items %}
+      <div class="muted">Поки що немає збережених генерацій.</div>
+    {% else %}
+      <div class="table">
+        <div class="table__head">
+          <div>Дата</div>
+          <div>Хештеги</div>
+        </div>
+        {% for it in items %}
+          <div class="table__row">
+            <div class="muted">{{ it.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+            <div class="mono">{{ it.hashtags }}</div>
+          </div>
+          <details class="details">
+            <summary class="details__sum">Показати текст поста</summary>
+            <div class="details__body">{{ it.post_text }}</div>
+          </details>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}
+
+

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Профіль{% endblock %}
+
+{% block content %}
+  <section class="card narrow">
+    <h1>Профіль</h1>
+
+    <div class="kv">
+      <div class="kv__k">Email</div>
+      <div class="kv__v mono">{{ current_user.email }}</div>
+      <div class="kv__k">Генерацій збережено</div>
+      <div class="kv__v"><strong>{{ total }}</strong></div>
+    </div>
+
+    <hr class="sep" />
+
+    <h2>Дані користувача (редагування)</h2>
+    <form method="post" class="form">
+      <label class="label">Ім’я (display name)</label>
+      <input class="input" type="text" name="display_name" maxlength="120" value="{{ current_user.display_name or '' }}" />
+      <button class="btn" type="submit">Зберегти</button>
+    </form>
+  </section>
+{% endblock %}
+
+

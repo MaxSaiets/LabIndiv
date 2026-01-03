@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Генератор хештегів{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <h1>Генератор хештегів для постів</h1>
+    <p class="muted">
+      Введіть текст поста — застосунок згенерує релевантні хештеги.
+      {% if current_user.is_authenticated %}
+        Результат також буде збережено в історії.
+      {% else %}
+        Для збереження історії увійдіть в акаунт.
+      {% endif %}
+    </p>
+
+    <div class="form">
+      <label for="postText" class="label">Текст поста</label>
+      <textarea id="postText" class="textarea" rows="8" placeholder="Напишіть тут текст..."></textarea>
+
+      <div class="row">
+        <button id="genBtn" class="btn" type="button">Згенерувати</button>
+        <button id="clearBtn" class="btn btn--ghost" type="button">Очистити</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="row row--space">
+      <h2>Результат</h2>
+      <button id="copyBtn" class="btn btn--small btn--ghost" type="button" disabled>Скопіювати</button>
+    </div>
+    <div id="result" class="result muted">Поки що порожньо…</div>
+    <div id="meta" class="meta muted"></div>
+  </section>
+{% endblock %}
+
+

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Вхід{% endblock %}
+
+{% block content %}
+  <section class="card narrow">
+    <h1>Вхід</h1>
+    <form method="post" class="form">
+      <label class="label">Email</label>
+      <input class="input" type="email" name="email" required />
+
+      <label class="label">Пароль</label>
+      <input class="input" type="password" name="password" required />
+
+      <button class="btn" type="submit">Увійти</button>
+      <p class="muted">
+        Немає акаунта? <a href="{{ url_for('auth.register') }}">Зареєструватися</a>
+      </p>
+    </form>
+  </section>
+{% endblock %}
+
+

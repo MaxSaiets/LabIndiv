@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Реєстрація{% endblock %}
+
+{% block content %}
+  <section class="card narrow">
+    <h1>Реєстрація</h1>
+    <form method="post" class="form">
+      <label class="label">Email</label>
+      <input class="input" type="email" name="email" required />
+
+      <label class="label">Ім’я (необов’язково)</label>
+      <input class="input" type="text" name="display_name" maxlength="120" />
+
+      <label class="label">Пароль (мін. 6 символів)</label>
+      <input class="input" type="password" name="password" required />
+
+      <button class="btn" type="submit">Створити акаунт</button>
+      <p class="muted">
+        Вже маєте акаунт? <a href="{{ url_for('auth.login') }}">Увійти</a>
+      </p>
+    </form>
+  </section>
+{% endblock %}
+
+
