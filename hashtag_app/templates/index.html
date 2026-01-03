@@ -17,6 +17,13 @@
       <label for="postText" class="label">Текст поста</label>
       <textarea id="postText" class="textarea" rows="8" placeholder="Напишіть тут текст..."></textarea>
 
+      <div class="form-group" style="margin-top: 12px;">
+        <label class="checkbox-label">
+          <input type="checkbox" id="useAI" checked>
+          <span>Використовувати ШІ для генерації резюме (Hugging Face API)</span>
+        </label>
+      </div>
+
       <div class="row">
         <button id="genBtn" class="btn" type="button">Згенерувати</button>
         <button id="clearBtn" class="btn btn--ghost" type="button">Очистити</button>
@@ -28,6 +35,9 @@
     <div class="row row--space">
       <h2>Результат</h2>
       <button id="copyBtn" class="btn btn--small btn--ghost" type="button" disabled>Скопіювати</button>
+    </div>
+    <div id="aiSummary" class="ai-summary" style="display: none; margin-bottom: 16px; padding: 12px; background: #f0f7ff; border-left: 3px solid #0066cc; border-radius: 4px;">
+      <strong>📝 Резюме (ШІ):</strong> <span id="aiSummaryText"></span>
     </div>
     <div id="result" class="result muted">Поки що порожньо…</div>
     <div id="meta" class="meta muted"></div>

@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <h1>Статистика використання</h1>
+    <p class="muted">Візуалізація результатів роботи з генератором хештегів.</p>
+  </section>
+
+  <section class="card">
+    <h2>Загальна статистика</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ total_requests }}</div>
+        <div class="stat-label">Всього генерацій</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ total_with_ai }}</div>
+        <div class="stat-label">З використанням ШІ</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ ((total_with_ai / total_requests * 100) if total_requests > 0 else 0) | round(1) }}%</div>
+        <div class="stat-label">Відсоток використання ШІ</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Активність по днях (останні 30 днів)</h2>
+    <canvas id="activityChart" width="400" height="150"></canvas>
+  </section>
+
+  <section class="card">
+    <h2>Використання ШІ</h2>
+    <canvas id="aiUsageChart" width="400" height="200"></canvas>
+  </section>
+
+  <section class="card">
+    <h2>Топ-10 найпопулярніших хештегів</h2>
+    <div class="table">
+      <div class="table__head">
+        <div>Хештег</div>
+        <div>Кількість використань</div>
+      </div>
+      {% for tag, count in top_hashtags %}
+        <div class="table__row">
+          <div class="mono">#{{ tag }}</div>
+          <div>{{ count }}</div>
+        </div>
+      {% endfor %}
+      {% if not top_hashtags %}
+        <div class="table__row">
+          <div class="muted" colspan="2">Поки що немає даних</div>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+    // Дані для діаграм
+    const daysData = {{ days_data | tojson }};
+    const aiUsage = {{ ai_usage | tojson }};
+    
+    // Діаграма активності
+    const daysLabels = Object.keys(daysData).reverse();
+    const daysValues = Object.values(daysData).reverse();
+    
+    new Chart(document.getElementById('activityChart'), {
+      type: 'line',
+      data: {
+        labels: daysLabels.map(d => d.split('-').slice(1).join('-')),
+        datasets: [{
+          label: 'Генерацій за день',
+          data: daysValues,
+          borderColor: 'rgb(0, 102, 204)',
+          backgroundColor: 'rgba(0, 102, 204, 0.1)',
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
+          }
+        }
+      }
+    });
+    
+    // Діаграма використання ШІ
+    new Chart(document.getElementById('aiUsageChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['З ШІ', 'Без ШІ'],
+        datasets: [{
+          data: [aiUsage.with_ai, aiUsage.without_ai],
+          backgroundColor: [
+            'rgb(0, 102, 204)',
+            'rgb(200, 200, 200)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  </script>
+  <style>
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .stat-card {
+      padding: 20px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 2em;
+      font-weight: bold;
+      color: #0066cc;
+    }
+    .stat-label {
+      margin-top: 8px;
+      color: #666;
+      font-size: 0.9em;
+    }
+    #activityChart, #aiUsageChart {
+      max-height: 300px;
+    }
+  </style>
+{% endblock %}
+

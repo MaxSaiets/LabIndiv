@@ -15,6 +15,7 @@
           <a href="{{ url_for('main.index') }}">Генератор</a>
           {% if current_user.is_authenticated %}
             <a href="{{ url_for('main.history') }}">Історія</a>
+            <a href="{{ url_for('main.statistics') }}">Статистика</a>
             <a href="{{ url_for('main.profile') }}">Профіль</a>
             <form method="post" action="{{ url_for('auth.logout') }}" class="inline">
               <button class="linklike" type="submit">Вийти</button>

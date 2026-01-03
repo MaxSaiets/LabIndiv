@@ -8,6 +8,11 @@ class Config:
             os.getenv("DATABASE_URL", "sqlite:///local.db")
         )
         self.SQLALCHEMY_TRACK_MODIFICATIONS = False
+        # Hugging Face API налаштування
+        self.HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
+        self.HUGGINGFACE_MODEL = os.getenv("HUGGINGFACE_MODEL", "facebook/bart-large-cnn")
+        # Google Colab альтернатива (якщо використовується власна модель)
+        self.COLAB_API_URL = os.getenv("COLAB_API_URL")  # URL до API на Google Colab
 
 
 def _normalize_database_url(url: str) -> str:

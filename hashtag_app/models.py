@@ -36,6 +36,7 @@ class HashtagRequest(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)
     post_text = db.Column(db.Text, nullable=False)
     hashtags = db.Column(db.Text, nullable=False)  # stored as "#a #b #c"
+    ai_summary = db.Column(db.Text, nullable=True)  # Резюме, згенероване ШІ
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, index=True)
 
     user = db.relationship("User", back_populates="requests")

@@ -66,14 +66,29 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const useAI = $("useAI")?.checked ?? true;
     genBtn.disabled = true;
-    setResult("Генерую…", true);
+    setResult(useAI ? "Генерую резюме за допомогою ШІ…" : "Генерую…", true);
     setMeta("");
     enableCopy(false);
+    
+    // Приховуємо резюме до отримання результату
+    const aiSummaryEl = $("aiSummary");
+    if (aiSummaryEl) aiSummaryEl.style.display = "none";
 
     try {
-      const data = await postJSON("/api/generate", { text });
+      const data = await postJSON("/api/generate", { text, use_ai: useAI });
       const tags = (data.hashtags || []).join(" ");
+      
+      // Показуємо резюме від ШІ, якщо воно є
+      if (data.ai_summary && useAI) {
+        const aiSummaryTextEl = $("aiSummaryText");
+        if (aiSummaryTextEl) {
+          aiSummaryTextEl.textContent = data.ai_summary;
+          if (aiSummaryEl) aiSummaryEl.style.display = "block";
+        }
+      }
+      
       if (!tags) {
         setResult("Не вдалося виділити ключові слова. Спробуйте інший текст.", true);
         enableCopy(false);
