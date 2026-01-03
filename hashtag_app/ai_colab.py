@@ -86,12 +86,16 @@ class ColabSummarizer:
 
 def get_colab_summarizer() -> Optional[ColabSummarizer]:
     """Отримує екземпляр Colab summarizer, якщо налаштовано."""
-    colab_url = os.getenv("COLAB_API_URL")
-    if not colab_url:
-        return None
     try:
+        colab_url = os.getenv("COLAB_API_URL")
+        if not colab_url or not colab_url.strip():
+            return None
         return ColabSummarizer(colab_url)
+    except ValueError:
+        # COLAB_API_URL не вказано - це нормально, просто не використовуємо Colab
+        return None
     except Exception as e:
+        # Інші помилки - логуємо, але не падаємо
         print(f"Failed to initialize Colab summarizer: {e}")
         return None
 
